@@ -15,4 +15,13 @@ export const USER_TABLE = pgTable("users", {
   isMember: boolean().default(false),
   customerId: varchar(),
 });
-
+export const STUDY_MATERIAL_TABLE = pgTable("studyMaterial", {
+  id: serial().primaryKey(),
+  courseId: varchar().notNull(),
+  courseType: varchar().notNull(),
+  topic: varchar().notNull(),
+  difficultyLevel: varchar().default("Easy"),
+  courseLayout: json(),
+  createdBy: varchar().notNull(),
+  status: varchar().default("Generating"),
+});

@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import {db} from '@/configs/db';
 import { USER_TABLE } from "@/configs/schema";
 import { eq } from "drizzle-orm";
-// import axios from "axios";  
+ import axios from "axios";  
 // import { d } from "drizzle-kit/index-BAUrj6Ib";
 import React, { useEffect } from "react";
 
@@ -23,21 +23,21 @@ function Provider({ children }) {
     */
   }
   const CheckIsNewUser = async () => {
-    // const resp = await axios.post("/api/create-user", { user: user }); //is a method used to send data to a server via an HTTP POST request.
-    // console.log(resp.data);
+    const resp = await axios.post("/api/create-user", { user: user }); //is a method used to send data to a server via an HTTP POST request.
+    console.log(resp.data);
 
 
-    const result=await db.select().from(USER_TABLE)
-    .where(eq(USER_TABLE.email,user?.primarymailAddress?.emailAddress));
+    // const result=await db.select().from(USER_TABLE)
+    // .where(eq(USER_TABLE.email,user?.primarymailAddress?.emailAddress));
 
-    if(result?.length==0){
-      const userResp= await db.insert(USER_TABLE).values({
-        name: user?.fullName,
-        email: user?.primaryEmailAddress?.emailAddress,
+    // if(result?.length==0){
+    //   const userResp= await db.insert(USER_TABLE).values({
+    //     name: user?.fullName,
+    //     email: user?.primaryEmailAddress?.emailAddress,
         
        
-      }).returning({id:USER_TABLE.id})
-    }
+    //   }).returning({id:USER_TABLE.id})
+    // }
   };
 
   return <>{children}</>; //This will render whatever child components (like pages) are passed to the Provider component.

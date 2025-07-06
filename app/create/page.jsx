@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import SelectOption from "./_components/SelectOption";
 import TopicInput from "./_components/TopicInput";
 import { Button } from "@/components/ui/button";
-//import { useUser } from "@clerk/nextjs";
-//import axios from "axios";
-//import { useRouter } from "next/navigation";
+
+import { useUser } from "@clerk/nextjs";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 //import { useToast } from "@/hooks/use-toast";
-///const { v4: uuidv4 } = require("uuid");
-//import { Loader2 } from "lucide-react"; // Example from Lucide Icons
+const { v4: uuidv4 } = require("uuid");
+import { Loader2 } from "lucide-react"; // Example from Lucide Icons
 
 /**
  * Creates a course outline based on user input.
@@ -24,10 +25,10 @@ import { Button } from "@/components/ui/button";
 
 function Create() {
   const [step, setStep] = useState(0);
-   const [formData, setFormData] = useState([]);
-  // const { user } = useUser();
-  // const [loading, setLoading] = useState(false);
-  // const router = useRouter();
+  const [formData, setFormData] = useState([]);
+   const { user } = useUser();
+   const [loading, setLoading] = useState(false);
+   const router = useRouter();
   // const { toast } = useToast();
 
   // handleUserInput provides a reusable function to update any field dynamically.
@@ -39,7 +40,21 @@ function Create() {
     //console.log(formData);
   };
 
-  
+  const GenerateCourseOutline = async () => {
+    const courseId = uuidv4();
+    //console.log(courseId);
+    setLoading(true);
+
+    const result = await axios.post("/api/generate-course-outline", {
+      courseId: courseId, // Unique ID for the course
+      ...formData, // User inputs
+      createdBy: user?.primaryEmailAddress?.emailAddress, // User's email
+    });
+    setLoading(false);
+    router.replace("/dashboard");
+    //console.log(result);
+  };
+
   return (
     <div className="flex flex-col items-center p-5 md:px-24 lg:px-36 mt-20">
       <h2 className="font-bold text-4xl text-primary">
@@ -76,8 +91,8 @@ function Create() {
         {step === 0 ? (
           <Button onClick={() => setStep(step + 1)}>Next</Button>
         ) : (
-          <Button>
-            Generate
+          <Button onClick={GenerateCourseOutline} disabled={loading}>
+            {loading ? <Loader2 className="animate-spin" /> : "Generate"}
           </Button>
         )}
       </div>

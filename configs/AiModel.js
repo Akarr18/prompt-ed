@@ -38,4 +38,26 @@ export const GenerateCourseOutline = model.startChat({
     },
   ],
 });
-
+export const generateNotesAiModel = model.startChat({
+  generationConfig,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "Generate exam material detail content for each chapter. Make sure to include structured headings and explanations in HTML format.",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: `<h2>Introduction to Atoms</h2>
+                   <h3>What are atoms?</h3>
+                   <p>Atoms are the basic building blocks of matter...</p>`,
+        },
+      ],
+    },
+  ],
+});

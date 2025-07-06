@@ -19,6 +19,7 @@ function CourseCardItem({ course }) {
 
         <h2 className="mt-3 font-medium text-lg">
           {
+            course?.courseLayout?.courseTitle ||
             course?.courseLayout?.course_title}
         </h2>
         <p className="text-sm line-clamp-2 text-gray-500 mt-2">

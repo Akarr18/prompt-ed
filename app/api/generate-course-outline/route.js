@@ -45,11 +45,12 @@ export async function POST(req) {
    //console.log("Database insertion successful:", dbResult);
 
   // //Trigger the Inngest function to generate chapter notes
-  // inngest.send({
-  //   name: "notes.generate",
-  //   data: {
-  //     course: dbResult[0].resp,
-  //   },
-  // });
+  const result= await inngest.send({
+    name: "notes.generate",
+    data: {
+      course: dbResult[0].resp,
+    },
+  });
+  console.log(result);
   return NextResponse.json({ result: dbResult[0] });
 }

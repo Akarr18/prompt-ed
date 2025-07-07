@@ -7,7 +7,7 @@ import Image from "next/image";
 import { RefreshCcw } from "lucide-react";
 import axios from "axios";
 
-function MaterialCardItem({ item }) {
+function MaterialCardItem({ item, studyTypeContent }) {
   // const { toast } = useToast();
   // const [loading, setLoading] = useState(false);
 
@@ -39,16 +39,20 @@ function MaterialCardItem({ item }) {
   return (
     <div
       className={`border shadow-md rounded-lg p-5 flex flex-col items-center
-      
+       ${studyTypeContent?.[item.type]?.length == null && "grayscale"}
     `}
     >
       {/* if nothing in the item in studyTypeContent then show the generate else show ready */}
        
+       {studyTypeContent?.[item.type]?.length == null ? (
+        <h2 className="p-1 px-2 bg-gray-500 text-white rounded-full text-[10px] mb-2">
+          Generate
+        </h2>
+      ) : (
         <h2 className="p-1 px-2 bg-green-500 text-white rounded-full text-[10px] mb-2">
           Ready
         </h2>
-      
-
+      )}
       {/*icon for each item */}
       <Image src={item.icon} alt={item.name} width={50} height={50} />
       <h2 className="font-medium mt-3">{item.name}</h2>
@@ -66,10 +70,20 @@ function MaterialCardItem({ item }) {
 
        
         
+           {studyTypeContent?.[item.type]?.length == null ? (
+        <Button
+          className="mt-3 w-full"
+          variant="outline"
+        >  
+          Generate
+        </Button>
+      ) : (
+        
           <Button className="mt-3 w-full" variant="outline">
             View
           </Button>
-       
+      
+      )}
       
     </div>
   );

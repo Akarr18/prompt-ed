@@ -1,8 +1,8 @@
 import React, { use, useEffect, useState } from "react";
 import MaterialCardItem from "./MaterialCardItem";
 import axios from "axios";
-function StudyMaterialSection() {
-//  const [studyTypeContent, setStudyTypeContent] = useState();
+function StudyMaterialSection(courseId) {
+ const [studyTypeContent, setStudyTypeContent] = useState();
   const MaterialList = [
     {
       name: "Notes/Chapters",
@@ -36,19 +36,19 @@ function StudyMaterialSection() {
     }
   ];
 
-  // useEffect(() => {
-  //   GetStudyMaterial();
-  // }, [courseId]);
+  useEffect(() => {
+    GetStudyMaterial();
+  }, [courseId]);
 
-  // const GetStudyMaterial = async () => {
-  //   const result = await axios.post("/api/study-type", {
-  //     //api call to get study material
-  //     courseId: courseId,
-  //     studyType: "ALL",
-  //   });
-  //   console.log(result?.data);
-  //   setStudyTypeContent(result.data); //update studyTypeContent
-  // };
+  const GetStudyMaterial = async () => {
+    const result = await axios.post("/api/study-type", {
+      //api call to get study material
+      courseId: courseId,
+      studyType: "ALL",
+    });
+    console.log(result?.data);
+    setStudyTypeContent(result.data); //update studyTypeContent
+  };
 
   return (
     <div className="mt-5">
@@ -57,7 +57,8 @@ function StudyMaterialSection() {
         {MaterialList.map((item, index) => (
           <MaterialCardItem
             item={item}
-           
+            key={index}
+            studyTypeContent={studyTypeContent}
           />
         ))}
       </div>

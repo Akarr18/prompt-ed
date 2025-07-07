@@ -20,27 +20,27 @@ function CourseList() {
   }, [user]);
 
   const GetCourseList = async () => {
-    //setLoading(true);
+    setLoading(true);
     const result = await axios.post("/api/courses", {
       createdBy: user?.primaryEmailAddress?.emailAddress,
     });
     //console.log(result);
      setCourseList(result.data.result); // takes the array of courses returned from the API and updates the state so that each course is stored as a separate item inside the courseList array.
     // setTotalCourse(result.data.result.length);
-     //setLoading(false);
+     setLoading(false);
   };
   return (
     <div className="mt-10">
       <h2 className="font-bold text-2xl flex justify-between items-center">
         📚 Enhance Your Learning Experience
-        {/* <Button
+        <Button
           variant="outline"
           onClick={GetCourseList}
           className="border-primary text-primary"
         >
           {" "}
           <RefreshCw /> Refresh
-        </Button> */}
+        </Button>
       </h2>
 
       {/*If loading == false → Render the real course list.

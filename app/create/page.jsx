@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 //import { useToast } from "@/hooks/use-toast";
 const { v4: uuidv4 } = require("uuid");
 import { Loader2 } from "lucide-react"; // Example from Lucide Icons
+import {toast} from "sonner";
+ // Assuming you have a toast component for notifications
 
 /**
  * Creates a course outline based on user input.
@@ -29,7 +31,7 @@ function Create() {
    const { user } = useUser();
    const [loading, setLoading] = useState(false);
    const router = useRouter();
-  // const { toast } = useToast();
+   //const { toast } = useToast();
 
   // handleUserInput provides a reusable function to update any field dynamically.
   const handleUserInput = (fieldName, fieldValue) => {
@@ -52,6 +54,7 @@ function Create() {
     });
     setLoading(false);
     router.replace("/dashboard");
+    toast("Your content is being generated, Please refresh after few seconds");
     //console.log(result);
   };
 

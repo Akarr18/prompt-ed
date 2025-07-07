@@ -2,7 +2,7 @@ import { Audiowide } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Provider from "./provider";
-//import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { Outfit } from "next/font/google";
 
 const outfit = Outfit({
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
           
           <Provider>
             <main>{children}</main>
-            {/* <Toaster /> */}
+            <Toaster />
           </Provider>
         </body>
       </html>

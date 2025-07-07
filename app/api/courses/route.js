@@ -10,8 +10,8 @@ export async function POST(req) {
   const result = await db
     .select()
     .from(STUDY_MATERIAL_TABLE)
-    .where(eq(STUDY_MATERIAL_TABLE.createdBy, createdBy));
-    // .orderBy(desc(STUDY_MATERIAL_TABLE.id));
+    .where(eq(STUDY_MATERIAL_TABLE.createdBy, createdBy))
+     .orderBy(desc(STUDY_MATERIAL_TABLE.id));
   return NextResponse.json({ result: result });
 }
 

@@ -32,14 +32,16 @@ function CourseCardItem({ course }) {
                <RefreshCw className="h-5 w-5" />
               Generating...
             </h2>
-          ) : (
-            <Button>View</Button>)}
-             {/* <Link href={"/course/" + course?.courseId}> */}
-            {/* //   {" "} */}
+          ) : 
+            
+          (
+            <Link href={"/course/" + course?.courseId}>
+              {" "}
               {/* Link to the course page with the course ID when the user click view */}
-              
-            {/* // </Link> */}
-          
+              <Button>View</Button>
+            </Link>
+          )}
+  
         </div>
       </div>
     </div>

@@ -3,97 +3,85 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-//import { useToast } from "@/hooks/use-toast";
 import { RefreshCcw } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
-//import { GenerateStudyTypeContent } from "@/inngest/functions";
 
-function MaterialCardItem({ item, studyTypeContent,course,refreshData }) {
-  // const { toast } = useToast();
-   const [loading, setLoading] = useState(false);
+function MaterialCardItem({ item, studyTypeContent, course, refreshData }) {
+  const [loading, setLoading] = useState(false);
 
   const GenerateContent = async () => {
-     toast(" Generating your content...");
-     setLoading(true);
+    toast("Generating your content...");
+    setLoading(true);
+
     let chapters = "";
     course?.courseLayout.chapters.forEach((chapter) => {
       chapters =
         (chapter.chapter_title || chapter.chapterTitle) + "," + chapters;
     });
 
-    const result = await axios.post("/api/study-type-content", {
-      courseId: course?.courseId,
-      type: item.name,
-      chapters: chapters,
-    });
-  //   console.log("API Response:", result.data); // Log API response
+    try {
+      const result = await axios.post("/api/study-type-content", {
+        courseId: course?.courseId,
+        type: item.name,
+        chapters: chapters,
+      });
 
-     setLoading(false);
-  //   console.log(result);
-     refreshData(true);
-     toast('your content is ready to view');
-  //   toast({
-  //     title: "Success",
-  //     description: "Content generated successfully",
-  //   });
-  // };
+      // ⚠️ Ensure the API only resolves after Inngest completes DB update
+      if (result.status === 200 && result.data?.success) {
+        toast("Your content is ready to view");
+        await refreshData(true); // This will re-fetch updated data
+      } else {
+        throw new Error("Failed to generate content");
+      }
+    } catch (error) {
+      toast.error("Failed to generate content. Try again.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const contentReady =
+    studyTypeContent?.[item.type]?.length > 0;
+
   return (
     <div
-      className={`border shadow-md rounded-lg p-5 flex flex-col items-center
-       ${(studyTypeContent?.[item.type]?.length == 0 || studyTypeContent?.[item.type]?.length == null) && "grayscale"}
-    `}
+      className={`border shadow-md rounded-lg p-5 flex flex-col items-center ${
+        !contentReady && "grayscale"
+      }`}
     >
-      {/* if nothing in the item in studyTypeContent then show the generate else show ready */}
-       
-       {studyTypeContent?.[item.type]?.length == 0 || studyTypeContent?.[item.type]?.length == null ? (
-        <h2 className="p-1 px-2 bg-gray-500 text-white rounded-full text-[10px] mb-2">
-          Generate
-        </h2>
-      ) : (
-        <h2 className="p-1 px-2 bg-green-500 text-white rounded-full text-[10px] mb-2">
-          Ready
-        </h2>
-      )}
-      {/*icon for each item */}
+      <h2
+        className={`p-1 px-2 rounded-full text-[10px] mb-2 ${
+          contentReady ? "bg-green-500" : "bg-gray-500"
+        } text-white`}
+      >
+        {contentReady ? "Ready" : "Generate"}
+      </h2>
+
       <Image src={item.icon} alt={item.name} width={50} height={50} />
       <h2 className="font-medium mt-3">{item.name}</h2>
       <p className="text-gray-500 text-sm text-center">{item.desc}</p>
 
-      {/* {
-          "notes": [{ "title": "Chapter 1", "content": "..." }],
-          "flashcard": [],
-          "quiz": [],
-          "qa": []
-          }
-          "notes" has one entry, meaning notes exist.
-          "flashcard", "quiz", and "qa" are empty arrays, meaning they haven't been generated yet.
-      */}
-
-       
-        
-           {(studyTypeContent?.[item.type]?.length == 0 || studyTypeContent?.[item.type]?.length == null)? (
+      {!contentReady ? (
         <Button
           className="mt-3 w-full"
           variant="outline"
-          onClick={()=>GenerateContent()}
-        >  
-        {loading && <RefreshCcw className="animate-spin" />}
+          onClick={GenerateContent}
+          disabled={loading}
+        >
+          {loading && <RefreshCcw className="animate-spin mr-2" />}
           Generate
         </Button>
       ) : (
-        <Link href={"/course/" + course?.courseId + item.path}>
+        <Link href={`/course/${course?.courseId}${item.path}`}>
           <Button className="mt-3 w-full" variant="outline">
             View
           </Button>
-          </Link>
-      
+        </Link>
       )}
-      
     </div>
   );
 }
-
 
 export default MaterialCardItem;

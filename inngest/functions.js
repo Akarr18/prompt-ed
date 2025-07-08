@@ -97,7 +97,7 @@ import { db } from "@/configs/db";
 import { USER_TABLE } from "@/configs/schema";
 import { eq } from "drizzle-orm";
 import axios from "axios";
-import { generateNotesAiModel } from "@/configs/AiModel";
+import { generateNotesAiModel, GenerateQaAiModel } from "@/configs/AiModel";
 import { CHAPTER_NOTES_TABLE, STUDY_MATERIAL_TABLE } from "@/configs/schema";
 import { GenerateFlashcardAiModel } from "@/configs/AiModel";
 import { STUDY_TYPE_CONTENT_TABLE } from "@/configs/schema";
@@ -228,7 +228,20 @@ export const GenerateStudyTypeContent = inngest.createFunction(
             return JSON.parse(result.response.text());
           }
         );
-      } else {
+      } 
+    
+      else if (studyType === "Question/Answer") {
+        AiResult = await step.run(
+            "Generating Question Answers using AI", 
+            async () => {
+            const result = await GenerateQaAiModel.sendMessage(prompt);
+            return JSON.parse(result.response.text());
+          }
+        );
+      } 
+      
+      
+      else {
         throw new Error(`Unsupported studyType: ${studyType}`);
       }
     } catch (error) {
@@ -246,18 +259,16 @@ export const GenerateStudyTypeContent = inngest.createFunction(
       return; // Terminate function after logging error
     }
 
-
-    // Save the valid result
-    const DbResult =await step.run("Save Result to DB", async () => {
-      const result=await db
+    const DbResult = await step.run("Save Result to DB", async () => {
+      const result = await db
         .update(STUDY_TYPE_CONTENT_TABLE)
         .set({
           content: AiResult,
           status: "Ready",
-          error:null, // Update status to Ready
-        }).where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));
-        return 'success';
-        
+          error: null, // Clear any previous errors
+        })
+        .where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));
+      return "Data Inserted";
     });
   }
 );

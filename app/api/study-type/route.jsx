@@ -45,4 +45,16 @@ export async function POST(req) {
       .where(eq(CHAPTER_NOTES_TABLE?.courseId, courseId)); // Filter by courseId
     return NextResponse.json(notes);
   }
+  else {
+    const result = await db
+      .select()
+      .from(STUDY_TYPE_CONTENT_TABLE)
+      .where(
+        and(
+          eq(STUDY_TYPE_CONTENT_TABLE?.courseId, courseId),
+          eq(STUDY_TYPE_CONTENT_TABLE.type, studyType)
+        )
+      );
+    return NextResponse.json(result[0] );
+  }
   } 

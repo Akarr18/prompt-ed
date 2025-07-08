@@ -18,7 +18,7 @@ function DashboardHeader() {
       {path != "/dashboard" && (
         <Link href={"/dashboard"}>
           <div className="flex items-center">
-            <Image src={"/Riselogo.svg"} alt="logo" width={170} height={100} />
+            <Image src={"/logo.png"} alt="logo" width={170} height={100} />
           </div>
         </Link>
       )}

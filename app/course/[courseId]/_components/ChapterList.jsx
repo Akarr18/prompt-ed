@@ -13,12 +13,12 @@ function ChapterList({ course }) {
             className="flex gap-5 items-center p-4 border 
                 shadow-md mb-2 rounded-lg cursor-pointer"
           >
-            <h2 className="text-2xl">{chapter?.emoji}</h2>
+            <h2 className="text-2xl">{chapter?.emojiIcon}</h2>
             <div>
               <h2 className="font-medium">
                 {chapter?.chapter_title || chapter?.chapterTitle}
               </h2>
-              <p className="text-gray-400 text-sm">{chapter?.summary}</p>
+              <p className="text-gray-400 text-sm">{chapter?.summary||chapter?.chapterSummary}</p>
             </div>
           </div>
         ))}

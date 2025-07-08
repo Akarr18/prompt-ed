@@ -4,7 +4,7 @@ const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash-002",
+  model: "gemini-2.5-flash", // you can switch to "gemini-1.5-flash-002" if you prefer
 });
 
 const generationConfig = {
@@ -14,8 +14,13 @@ const generationConfig = {
   maxOutputTokens: 8192,
   responseMimeType: "application/json",
 };
-
-
+const generationConfig2 = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 40,
+  maxOutputTokens: 8192,
+  responseMimeType: "text/plain",
+};
 
 export const GenerateCourseOutline = model.startChat({
   generationConfig,
@@ -24,7 +29,7 @@ export const GenerateCourseOutline = model.startChat({
       role: "user",
       parts: [
         {
-          text: "Generate a study material for Python for  Exam and level of difficulty will be EASY with summery of course,List of Chapters along with summery for each chapter, Topic list in each chapter, All resule in JSON format\n\n",
+          text: `Generate a study material for Python for an Exam and level of difficulty will be EASY with summary of course, List of Chapters along with summary for each chapter, Topic list in each chapter, All results in JSON format`,
         },
       ],
     },
@@ -32,20 +37,76 @@ export const GenerateCourseOutline = model.startChat({
       role: "model",
       parts: [
         {
-          text: '```json\n{\n  "course_title": "Python for Beginners",\n  "difficulty": "Easy",\n  "summary": "This course provides an introduction to the Python programming language, covering the fundamentals necessary to write simple programs and understand basic programming concepts.",\n  "chapters": [\n    {\n      "chapter_title": "Introduction to Python",\n      "summary": "This chapter introduces the Python programming language, its history, and its uses. It also covers basic syntax and the concept of variables and data types.",\n      "topics": [\n        "What is Python?",\n        "Why use Python?",\n        "Installing Python",\n        "Running Python code",\n        "Basic syntax",\n        "Variables and data types",\n        "Operators"\n      ]\n    },\n    {\n      "chapter_title": "Control Flow",\n      "summary": "This chapter focuses on controlling the flow of execution in Python programs, including conditional statements, loops, and functions.",\n      "topics": [\n        "Conditional statements (if, elif, else)",\n        "Loops (for, while)",\n        "Loop control statements (break, continue)",\n        "Functions"\n      ]\n    },\n    {\n      "chapter_title": "Data Structures",\n      "summary": "This chapter introduces fundamental data structures in Python, such as lists, tuples, dictionaries, and sets.",\n      "topics": [\n        "Lists",\n        "Tuples",\n        "Dictionaries",\n        "Sets"\n      ]\n    },\n    {\n      "chapter_title": "Strings and Input/Output",\n      "summary": "This chapter covers working with strings, taking input from the user, and displaying output in Python programs.",\n      "topics": [\n        "String manipulation",\n        "String formatting",\n        "Input and output (input(), print())"\n      ]\n    },\n    {\n      "chapter_title": "Modules and Libraries",\n      "summary": "This chapter introduces the concept of modules and libraries in Python, allowing you to leverage pre-written code for various tasks.",\n      "topics": [\n        "What are modules and libraries?",\n        "Importing modules",\n        "Using built-in modules",\n        "Third-party libraries"\n      ]\n    },\n    {\n      "chapter_title": "Error Handling",\n      "summary": "This chapter covers how to handle errors in Python programs, ensuring graceful execution and preventing program crashes.",\n      "topics": [\n        "Types of errors",\n        "Try-except blocks",\n        "Raising exceptions"\n      ]\n    }\n  ]\n}\n```',
+          text: `\`\`\`json
+{
+  "courseTitle": "Python Fundamentals for Beginners Exam",
+  "courseSummary": "This study material is designed for individuals preparing for an entry-level Python exam. It covers core Python concepts from the ground up, focusing on fundamental syntax, basic data structures, control flow, and functions. The content is presented in an easy-to-understand manner, ideal for absolute beginners looking to build a strong foundation in programming with Python.",
+  "difficultyLevel": "EASY",
+  "chapters": [
+    {
+      "chapterNumber": 1,
+      "chapterTitle": "Getting Started with Python",
+      "chapterSummary": "This chapter introduces what Python is, its widespread uses, and why it's an excellent language for beginners. It covers the very basics of setting up a Python environment conceptually.",
+      "topics": [
+        "Introduction to Python: What it is and its benefits",
+        "Common applications of Python",
+        "Key features of Python",
+        "Conceptual overview of Python installation and IDEs"
+      ]
+    },
+    {
+      "chapterNumber": 2,
+      "chapterTitle": "Variables and Data Types",
+      "chapterSummary": "Learn how to store and manage data in Python using variables. This chapter covers the most common built-in data types and how to assign values to variables.",
+      "topics": [
+        "What are variables?",
+        "Assigning values",
+        "Basic data types",
+        "Type conversion"
+      ]
+    },
+    {
+      "chapterNumber": 3,
+      "chapterTitle": "Operators in Python",
+      "chapterSummary": "This chapter introduces operators including arithmetic, comparison, and logical operators.",
+      "topics": [
+        "Arithmetic Operators",
+        "Comparison Operators",
+        "Logical Operators"
+      ]
+    },
+    {
+      "chapterNumber": 4,
+      "chapterTitle": "Control Flow",
+      "chapterSummary": "Learn about conditional statements and loops in Python.",
+      "topics": [
+        "If/Else Statements",
+        "For Loops",
+        "While Loops",
+        "Break/Continue"
+      ]
+    }
+  ]
+}
+\`\`\``,
         },
       ],
     },
   ],
 });
+
 export const generateNotesAiModel = model.startChat({
-  generationConfig,
+  generationConfig: generationConfig2,
   history: [
     {
       role: "user",
       parts: [
         {
-          text: "Generate exam material detail content for each chapter. Make sure to include structured headings and explanations in HTML format.",
+          text: `Generate exam material detailed content for each chapter. 
+Use structured headings, subheadings, and HTML tags like <h2>, <h3>, <ul>, <li>, <p>, etc.
+Make sure each topic under the chapter has its explanation.
+The content should be wrapped in proper HTML format (excluding <html>, <head>, <body>).
+Do not add markdown or triple backticks.`,
         },
       ],
     },
@@ -53,9 +114,27 @@ export const generateNotesAiModel = model.startChat({
       role: "model",
       parts: [
         {
-          text: `<h2>Introduction to Atoms</h2>
-                   <h3>What are atoms?</h3>
-                   <p>Atoms are the basic building blocks of matter...</p>`,
+          text: `
+<h2>Introduction to Atoms</h2>
+<p>This chapter introduces the fundamental concept of atoms as the building blocks of matter.</p>
+
+<h3>What are atoms?</h3>
+<p>Atoms are the smallest units of matter that retain the properties of an element. They consist of a nucleus (containing protons and neutrons) and are surrounded by electrons.</p>
+
+<h3>Early Atomic Models</h3>
+<ul>
+  <li><strong>Dalton's Model:</strong> Atoms are solid, indivisible spheres.</li>
+  <li><strong>Thomson's Model:</strong> "Plum pudding" model where electrons are embedded in a positively charged sphere.</li>
+  <li><strong>Rutherford's Model:</strong> A dense nucleus with electrons orbiting in empty space.</li>
+</ul>
+
+<h3>Subatomic Particles</h3>
+<ul>
+  <li><strong>Protons:</strong> Positively charged particles in the nucleus.</li>
+  <li><strong>Neutrons:</strong> Neutral particles also in the nucleus.</li>
+  <li><strong>Electrons:</strong> Negatively charged particles orbiting the nucleus.</li>
+</ul>
+`,
         },
       ],
     },

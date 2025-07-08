@@ -219,9 +219,7 @@ export const GenerateNotes = inngest.createFunction(
           course?.courseType +
           " material detail content for each chapter. " +
           "Make sure to give notes for each topic from the chapters, " +
-          "include code examples if applicable inside <precode> tags, " +
-          "highlight key points, and style each tag appropriately. " +
-          "Provide the response in HTML format (Do not include <html>, <head>, <body>, or <title> tags). " +
+          "Provide the response in HTML format (Do not include <html>, <head>, <body>, or <title> tags). give whole code in one single response box " +
           "The chapter content is: " +
           JSON.stringify(chapter);
 
@@ -229,7 +227,7 @@ export const GenerateNotes = inngest.createFunction(
         const result = await generateNotesAiModel.sendMessage(PROMPT);
         const aiResp = result.response.text(); // Extract AI-generated text response
 
-        console.log(PROMPT); // Log the prompt for debugging
+        //console.log(PROMPT);  Log the prompt for debugging
 
         // Store the generated notes in the database
         await db.insert(CHAPTER_NOTES_TABLE).values({

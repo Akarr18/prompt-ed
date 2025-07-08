@@ -23,7 +23,8 @@ function CourseCardItem({ course }) {
             course?.courseLayout?.course_title}
         </h2>
         <p className="text-sm line-clamp-2 text-gray-500 mt-2">
-          {course?.courseLayout?.summary}
+          {course?.courseLayout?.summary ||
+            course?.courseLayout?.courseSummary}
         </p>
 
         <div className="mt-3 flex justify-end">

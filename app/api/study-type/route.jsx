@@ -55,6 +55,6 @@ export async function POST(req) {
           eq(STUDY_TYPE_CONTENT_TABLE.type, studyType)
         )
       );
-    return NextResponse.json(result[0] );
+    return NextResponse.json(result[0]??[] );
   }
   } 

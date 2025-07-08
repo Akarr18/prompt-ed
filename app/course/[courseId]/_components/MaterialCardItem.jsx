@@ -6,28 +6,29 @@ import Image from "next/image";
 //import { useToast } from "@/hooks/use-toast";
 import { RefreshCcw } from "lucide-react";
 import axios from "axios";
+//import { GenerateStudyTypeContent } from "@/inngest/functions";
 
-function MaterialCardItem({ item, studyTypeContent }) {
+function MaterialCardItem({ item, studyTypeContent,course }) {
   // const { toast } = useToast();
-  // const [loading, setLoading] = useState(false);
+   const [loading, setLoading] = useState(false);
 
-  // const GenerateContent = async () => {
+  const GenerateContent = async () => {
   //   toast(" Generating your content...");
-  //   setLoading(true);
-  //   let chapters = "";
-  //   course?.courseLayout.chapters.forEach((chapter) => {
-  //     chapters =
-  //       (chapter.chapter_title || chapter.chapterTitle) + "," + chapters;
-  //   });
+     setLoading(true);
+    let chapters = "";
+    course?.courseLayout.chapters.forEach((chapter) => {
+      chapters =
+        (chapter.chapter_title || chapter.chapterTitle) + "," + chapters;
+    });
 
-  //   const result = await axios.post("/api/study-type-content", {
-  //     courseId: course?.courseId,
-  //     type: item.name,
-  //     chapters: chapters,
-  //   });
+    const result = await axios.post("/api/study-type-content", {
+      courseId: course?.courseId,
+      type: item.name,
+      chapters: chapters,
+    });
   //   console.log("API Response:", result.data); // Log API response
 
-  //   setLoading(false);
+     setLoading(false);
   //   console.log(result);
   //   refreshData(true);
   //   toast({
@@ -35,7 +36,7 @@ function MaterialCardItem({ item, studyTypeContent }) {
   //     description: "Content generated successfully",
   //   });
   // };
-
+  };
   return (
     <div
       className={`border shadow-md rounded-lg p-5 flex flex-col items-center
@@ -74,7 +75,9 @@ function MaterialCardItem({ item, studyTypeContent }) {
         <Button
           className="mt-3 w-full"
           variant="outline"
+          onClick={()=>GenerateContent()}
         >  
+        {loading && <RefreshCcw className="animate-spin" />}
           Generate
         </Button>
       ) : (
@@ -88,5 +91,6 @@ function MaterialCardItem({ item, studyTypeContent }) {
     </div>
   );
 }
+
 
 export default MaterialCardItem;

@@ -140,3 +140,25 @@ Do not add markdown or triple backticks.`,
     },
   ],
 });
+
+export const GenerateFlashcardAiModel = model.startChat({
+  generationConfig,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "Generate the flashcard on topic : Flutter Fundamentals,User Interface (UI) Development,Basic App Navigation in JSON format with front back content, Maximum 15",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: '```json\n[\n  {\n    "front": "What is a Widget in Flutter?",\n    "back": "A Widget is the basic building block of a Flutter UI. Everything you see on the screen is a widget, including layout elements, text, images, and more.  They are immutable and describe the UI."\n  },\n  {\n    "front": "Explain the difference between StatelessWidget and StatefulWidget.",\n    "back": "StatelessWidget: Its UI doesn\'t change after it\'s built.  StatefulWidget: Its UI can change based on user interaction or other factors. It manages its own state using State objects."\n  },\n  {\n    "front": "Name three common layout widgets in Flutter.",\n    "back": "Row, Column, and Stack are common layout widgets.  Row arranges children horizontally, Column vertically, and Stack overlays children."\n  },\n  {\n    "front": "What is the purpose of a `BuildContext`?",\n    "back": "BuildContext provides information about the location of a widget within the widget tree. It\'s used to access the theme, parent widgets, and other contextual information."\n  },\n  {\n    "front": "How do you display text in Flutter?",\n    "back": "Use the `Text` widget.  You can style it with properties like `style`, `textAlign`, `textDirection`, etc."\n  },\n  {\n    "front": "How do you navigate to a new screen in Flutter?",\n    "back": "Use `Navigator.push(context, MaterialPageRoute(builder: (context) => NewScreen()));`  This pushes a new route onto the navigation stack."\n  },\n  {\n    "front": "How do you pass data to a new screen during navigation?",\n    "back": "Pass data via the constructor of the new screen\'s widget.  You can also use named routes and pass arguments via `RouteSettings`."\n  },\n  {\n    "front": "What is a `MaterialApp` widget?",\n    "back": "It\'s the root widget of a Flutter application that provides material design styling and navigation capabilities."\n  },\n  {\n    "front": "What is the purpose of the `Scaffold` widget?",\n    "back": "Provides a basic visual layout structure for a Material Design app including an AppBar, Body, and Drawer."\n  },\n  {\n    "front": "How do you handle user input in Flutter?",\n    "back": "Using widgets like `TextField` and `Checkbox` to capture user input. Then process these inputs within the state of a StatefulWidget."\n  },\n  {\n    "front": "What are keys in Flutter widgets?",\n    "back": "Keys provide a way to uniquely identify widgets, especially when the structure of the widget tree changes dynamically. This helps Flutter manage the UI effectively during rebuilds."\n  },\n  {\n    "front": "Explain the concept of a routing table in Flutter.",\n    "back": "A routing table (often implemented using `MaterialApp`\'s `routes` property) maps named routes to widget builders, allowing for easy navigation to specific screens based on route names."\n  },\n  {\n    "front": "What is the difference between `push` and `pushReplacementNamed` in navigation?",\n    "back": "`push` adds a new route to the navigation stack. `pushReplacementNamed` replaces the current route with a new one, removing the previous route from the stack."\n  },\n  {\n    "front": "How to pop a route from the navigation stack?",\n    "back": "Use `Navigator.pop(context);` or `Navigator.pop(context, data);` to pop the current route and optionally return data to the previous screen."\n  },\n  {\n    "front": "What\'s the role of `initState()` in a StatefulWidget?",\n    "back": "It\'s a lifecycle method called only once when the StatefulWidget is inserted into the widget tree. It\'s used for initializing state variables."\n  }\n]\n```\n',
+        },
+      ],
+    },
+  ],
+});

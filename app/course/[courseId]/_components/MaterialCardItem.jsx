@@ -6,14 +6,15 @@ import Image from "next/image";
 //import { useToast } from "@/hooks/use-toast";
 import { RefreshCcw } from "lucide-react";
 import axios from "axios";
+import { toast } from "sonner";
 //import { GenerateStudyTypeContent } from "@/inngest/functions";
 
-function MaterialCardItem({ item, studyTypeContent,course }) {
+function MaterialCardItem({ item, studyTypeContent,course,refreshData }) {
   // const { toast } = useToast();
    const [loading, setLoading] = useState(false);
 
   const GenerateContent = async () => {
-  //   toast(" Generating your content...");
+     toast(" Generating your content...");
      setLoading(true);
     let chapters = "";
     course?.courseLayout.chapters.forEach((chapter) => {
@@ -30,7 +31,8 @@ function MaterialCardItem({ item, studyTypeContent,course }) {
 
      setLoading(false);
   //   console.log(result);
-  //   refreshData(true);
+     refreshData(true);
+     toast('your content is ready to view');
   //   toast({
   //     title: "Success",
   //     description: "Content generated successfully",
@@ -40,12 +42,12 @@ function MaterialCardItem({ item, studyTypeContent,course }) {
   return (
     <div
       className={`border shadow-md rounded-lg p-5 flex flex-col items-center
-       ${studyTypeContent?.[item.type]?.length == null && "grayscale"}
+       ${(studyTypeContent?.[item.type]?.length == 0 || studyTypeContent?.[item.type]?.length == null) && "grayscale"}
     `}
     >
       {/* if nothing in the item in studyTypeContent then show the generate else show ready */}
        
-       {studyTypeContent?.[item.type]?.length == null ? (
+       {studyTypeContent?.[item.type]?.length == 0 || studyTypeContent?.[item.type]?.length == null ? (
         <h2 className="p-1 px-2 bg-gray-500 text-white rounded-full text-[10px] mb-2">
           Generate
         </h2>
@@ -71,7 +73,7 @@ function MaterialCardItem({ item, studyTypeContent,course }) {
 
        
         
-           {studyTypeContent?.[item.type]?.length == null ? (
+           {(studyTypeContent?.[item.type]?.length == 0 || studyTypeContent?.[item.type]?.length == null)? (
         <Button
           className="mt-3 w-full"
           variant="outline"
@@ -81,10 +83,11 @@ function MaterialCardItem({ item, studyTypeContent,course }) {
           Generate
         </Button>
       ) : (
-        
+        <Link href={"/course/" + course?.courseId + item.path}>
           <Button className="mt-3 w-full" variant="outline">
             View
           </Button>
+          </Link>
       
       )}
       

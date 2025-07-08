@@ -64,6 +64,7 @@ function StudyMaterialSection({courseId,course}) {
             key={index}
             studyTypeContent={studyTypeContent}
             course={course}
+            refreshData={GetStudyMaterial} // Pass the function to refresh data
           />
          
         ))}

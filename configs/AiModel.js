@@ -162,3 +162,24 @@ export const GenerateFlashcardAiModel = model.startChat({
     },
   ],
 });
+export const GenerateQuizAiModel = model.startChat({
+  generationConfig,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "Generate Quiz on topic : Flutter Fundamentals,User Interface (UI) Development,Basic App Navigation with Question and Options along with correct answer in JSON format",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: '```json\n{\n  "quizTitle": "Flutter Fundamentals, UI Development & Basic Navigation",\n  "questions": [\n    {\n      "question": "What is the fundamental building block of a Flutter UI?",\n      "options": ["Widget", "Layout", "View", "Component"],\n      "answer": "Widget"\n    },\n    {\n      "question": "Which widget is used to arrange children in a column?",\n      "options": ["Row", "Column", "Stack", "Container"],\n      "answer": "Column"\n    },\n    {\n      "question": "What does `StatelessWidget` mean in Flutter?",\n      "options": ["A widget that changes its state based on user interaction", "A widget whose state never changes", "A widget that manages its own state", "A widget that relies on external state management"],\n      "answer": "A widget whose state never changes"\n    },\n    {\n      "question": "Which widget is best suited for creating a scrollable list of items?",\n      "options": ["ListView", "GridView", "Column", "Row"],\n      "answer": "ListView"\n    },\n    {\n      "question": "How do you navigate to a new screen in Flutter?",\n      "options": ["Using `Navigator.push`", "Using `setState`", "Using `BuildContext.push`", "Using `Navigator.pop`"],\n      "answer": "Using `Navigator.push`"\n    },\n    {\n      "question": "What does the `BuildContext` provide?",\n      "options": ["Access to the application\'s theme", "Information about the widget\'s position in the widget tree", "A way to access shared preferences", "A mechanism for handling user input"],\n      "answer": "Information about the widget\'s position in the widget tree"\n    },\n    {\n      "question": "Which widget is commonly used to display an image in Flutter?",\n      "options": ["Image.asset", "Image.network", "Icon", "Text"],\n      "answer": "Image.asset"\n    },\n    {\n      "question": "What is the purpose of a `Key` in Flutter?",\n      "options": ["To uniquely identify a widget", "To manage state changes", "To style widgets", "To handle user input"],\n      "answer": "To uniquely identify a widget"\n    },\n    {\n      "question": "How do you pass data to a new screen during navigation?",\n      "options": ["Using arguments in `Navigator.push`", "Using `setState`", "Using global variables", "Using shared preferences"],\n      "answer": "Using arguments in `Navigator.push`"\n    },\n    {\n      "question": "What is the role of a `Scaffold` widget?",\n      "options": ["Provides a basic visual layout structure", "Manages app state", "Handles navigation", "Displays images"],\n      "answer": "Provides a basic visual layout structure"\n    }\n  ]\n}\n```\n',
+        },
+      ],
+    },
+  ],
+});

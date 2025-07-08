@@ -33,7 +33,7 @@ export async function POST(req) {
     const result = {
       notes: notes,
       flashcard: contentList?.filter((item) => item.type == "Flashcard"),
-      quiz: null,
+      quiz: contentList?.filter((item) => item.type == "Quiz"),
       qa: null,
     };
       return NextResponse.json(result);

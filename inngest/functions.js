@@ -101,6 +101,7 @@ import { generateNotesAiModel } from "@/configs/AiModel";
 import { CHAPTER_NOTES_TABLE, STUDY_MATERIAL_TABLE } from "@/configs/schema";
 import { GenerateFlashcardAiModel } from "@/configs/AiModel";
 import { STUDY_TYPE_CONTENT_TABLE } from "@/configs/schema";
+import { GenerateQuizAiModel } from "@/configs/AiModel";
 
 
 //import { Button } from "@/components/ui/button";
@@ -206,25 +207,54 @@ export const GenerateStudyTypeContent = inngest.createFunction(
   { event: "studyType.content" }, // Event trigger
 
   async ({ event, step }) => {
-    const { studyType, prompt,courseId,recordId } = event.data;
-   // let AiResult = null;  Initialize AI result
+    const { studyType, prompt, courseId, recordId } = event.data;
+    let AiResult = null; // Initialize AI result
 
     // Generate Study Type Content safely
-
-    const FlashcardAiResult = await step.run(
+    try {
+      if (studyType === "Flashcard") {
+        AiResult = await step.run(
             "Generating Flashcards using AI",
             async () => {
             const result = await GenerateFlashcardAiModel.sendMessage(prompt);
             return JSON.parse(result.response.text());
-            })
+          }
+        );
+      } else if (studyType === "Quiz") {
+        AiResult = await step.run(
+            "Generating Quiz using AI", 
+            async () => {
+            const result = await GenerateQuizAiModel.sendMessage(prompt);
+            return JSON.parse(result.response.text());
+          }
+        );
+      } else {
+        throw new Error(`Unsupported studyType: ${studyType}`);
+      }
+    } catch (error) {
+      console.error(`AI generation failed for ${studyType}`, error);
+      await step.run("Update DB - Failed Generation", async () => {
+        await db
+          .update(STUDY_TYPE_CONTENT_TABLE)
+          .set({
+            content: null,
+            status: "Failed",
+            error: error.message,
+          })
+          .where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));
+      });
+      return; // Terminate function after logging error
+    }
+
 
     // Save the valid result
     const DbResult =await step.run("Save Result to DB", async () => {
       const result=await db
         .update(STUDY_TYPE_CONTENT_TABLE)
         .set({
-          content: FlashcardAiResult,
-          status: "Ready", // Update status to Ready
+          content: AiResult,
+          status: "Ready",
+          error:null, // Update status to Ready
         }).where(eq(STUDY_TYPE_CONTENT_TABLE.id, recordId));
         return 'success';
         

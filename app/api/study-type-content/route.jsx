@@ -14,11 +14,14 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   const { chapters, courseId,type } = await req.json(); // get the data from the request
 
-  const PROMPT = "Generate the flashcard on topic : " +
+  const PROMPT = // AI Prompt for flashcard and quiz generation
+    type == "Flashcard"
+      ? "Generate the flashcard on topic : " +
         chapters +
-        " in JSON format with front back content, Maximum 15";
-  
-  // AI Prompt for flashcard and quiz generation
+        " in JSON format with front back content, Maximum 15"
+      : "Generate Quiz on topic : " +
+        chapters +
+        " with Question and Options along with correct answer in JSON format, (Max 10)";
     //type == "Flashcard"
        
       

@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import SideBar from "./_components/SideBar";
 import DashboardHeader from "./_components/DashboardHeader";
-//import { CourseCountContext } from "../_context/CourseCountContext";
+import { CourseCountContext } from "../_context/CourseCountContext";
 {
   /*this wrap the entire dashboard*/
 }
 function DashboardLayout({ children }) {
-  // const [totalCourse, setTotalCourse] = useState(0);
+   const [totalCourse, setTotalCourse] = useState(0);
   // {
   //   /* By wrapping your component tree in the CourseCountContext.Provider, 
   //   every child component within that layout can access the same context value. 
@@ -16,7 +16,7 @@ function DashboardLayout({ children }) {
   //   all other components that consume the context will receive the updated value.*/
   // }
   return (
-    // <CourseCountContext.Provider value={{ totalCourse, setTotalCourse }}>
+     <CourseCountContext.Provider value={{ totalCourse, setTotalCourse }}>
       <div>
         <div className="md:w-64 hidden md:block fixed">
           <SideBar />
@@ -26,7 +26,7 @@ function DashboardLayout({ children }) {
           <div className="p-10">{children}</div>
         </div>
       </div>
-    // </CourseCountContext.Provider>
+     </CourseCountContext.Provider>
   );
 }
 

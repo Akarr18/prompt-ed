@@ -6,15 +6,15 @@ import React from "react";
 import { format } from "date-fns";
 
 function CourseCardItem({ course }) {
- // const currentDate = format(new Date(), "dd MMM yyyy"); // "16 Feb 2025"
+  //const currentDate = format(new Date(), "dd MMM yyyy"); // "16 Feb 2025"
   return (
     <div className="border rounded-lg shadow-lg p-5">
       <div>
         <div className="flex justify-between items-center">
           <Image src={"/knowledge.png"} alt="other" width={50} height={50} />
-          <h2 className="text-[10px] p-1 px-2 rounded-full bg-primary text-white">
-            7th july
-          </h2>
+          {/* <h2 className="text-[10px] p-1 px-2 rounded-full bg-primary text-white">
+          { currentDate}
+          </h2> */}
         </div>
 
         <h2 className="mt-3 font-medium text-lg">

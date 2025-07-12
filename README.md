@@ -6,9 +6,9 @@
   <p align="center">
     <a href="https://prompt-ed-rose.vercel.app/">Visit Site</a>
     ·
-    <a href="https://github.com/Akarr18/issues">Report Bug</a>
+    <a href="https://github.com/Akarr18/prompt-ed/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Akarr18/pulls">Request Feature</a>
+    <a href="https://github.com/Akarr18/prompt-ed/pulls">Request Feature</a>
   </p>
 </div>
 
